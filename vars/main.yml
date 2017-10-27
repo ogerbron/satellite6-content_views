@@ -1,0 +1,26 @@
+---
+# vars file for satellite6-content_views
+sat_protocol: https
+sat_url_api: katello/api
+sat_url: "{{ sat_protocol }}://{{ sat_hostname }}/{{ sat_url_api }}"
+sat_url_foreman: "{{ sat_protocol }}://{{ sat_hostname }}/foreman_tasks/api"
+sat_publish_description: "Automated publishing from Ansible"
+sat_promote_description: "Automated promotion from Ansible"
+
+#General queries
+query_organization_id: "results[?name=='{{ sat_org }}'].id | [0]"
+
+#Content view queries
+query_cv_id: "results[?name=='{{ sat_cv_name }}'].id | [0]"
+query_cv_not_composite: "results[?composite=='false'].id | [0]"
+query_cv_version_list: "versions[*].{id: id, version: version, environment_ids: environment_ids}"
+query_cv_version_id: ""
+
+#Tasks queries
+query_tasks_get_state: "results[?id=='{{ sat_cv_task_id }}'].state | [0]"
+query_tasks_get_result: "results[?id=='{{ sat_cv_task_id }}'].result | [0]"
+
+#Environment queries
+query_env_prior: "results[?name=='{{ sat_current_env_name }}'].prior.name | [0]"
+query_env_id: "results[?name=='{{ sat_current_env_name }}'].id | [0]"
+query_env_is_promoted: "environments[?id=='{{ sat_env_id }}'] | [0]"

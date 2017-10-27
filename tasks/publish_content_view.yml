@@ -1,0 +1,21 @@
+- include: update_composite_view.yml
+  when: sat_cv.json.composite
+
+- name: Publish Content View
+  uri:
+    url: "{{ sat_url }}/v2/content_views/{{ sat_cv_id }}/publish?organization_id={{ sat_org_id }}"
+    method: POST
+    body:
+      id: "{{ sat_cv_id }}"
+      description: "{{ sat_publish_description }}"
+    body_format: json
+    status_code: 202
+    user: "{{ sat_user }}"
+    password: "{{ sat_password }}"
+    validate_certs: no
+    force_basic_auth: yes
+  register: content_view_publish
+
+- include: check_task.yml
+  vars:
+    sat_cv_task_id: "{{ content_view_publish.json.id }}"

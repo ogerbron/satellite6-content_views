@@ -1,0 +1,50 @@
+#Get Environment list
+- name: Get environment list
+  uri:
+    url: "{{ sat_url }}/environments?organization_id={{ sat_org_id }}"
+    method: GET
+    user: "{{ sat_user }}"
+    password: "{{ sat_password }}"
+    validate_certs: no
+    force_basic_auth: yes
+  register: environment_list
+
+- name: Initializing sat_current_env_name
+  set_fact:
+    sat_current_env_name: "{{ sat_env_name }}"
+    sat_env_path:
+      - "{{ sat_env_name }}"
+
+#Getting content view content as it may have changed if we 
+#performed a publish action previously
+- include: get_content_view.yml
+
+#The only way I managed to build the environment path
+#Couldn't use until with a block
+#Couldn't use until with only set_fact, as it will set the value only once
+- name: Setting {{ sat_current_env_name }} in path
+  set_fact: 
+    sat_env_path: "{{ [ environment_list.json | json_query(query_env_prior) ] + sat_env_path }}"
+    sat_current_env_name: "{{ environment_list.json | json_query(query_env_prior) }}"
+  when: 
+    - not environment_list.json | json_query(query_env_prior) == 'Library'
+    - sat_follow_env_path 
+  with_sequence: start=0 end=15 stride=1
+
+- name: Get last content view version
+  set_fact:
+    sat_cv_version_last: "{{ sat_cv.json | json_query(query_cv_version_list) | sort(attribute='version') | last }}"
+
+- name: Get content view version content
+  uri:
+    url: "{{ sat_url }}/v2/content_view_versions/{{ sat_cv_version_last.id }}"
+    method: GET
+    user: "{{ sat_user }}"
+    password: "{{ sat_password }}"
+    validate_certs: no
+    force_basic_auth: yes
+  register: content_view_version_last
+
+- include: promote_to_env.yml
+  with_items: "{{ sat_env_path }}"
+  

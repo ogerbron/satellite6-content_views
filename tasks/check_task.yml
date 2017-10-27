@@ -1,0 +1,18 @@
+- name: Check task progression (Task id is {{ sat_cv_task_id }})
+  uri:
+    url: "{{ sat_url_foreman }}/tasks"
+    method: GET
+    body_format: json
+    status_code: 200
+    user: "{{ sat_user }}"
+    password: "{{ sat_password }}"
+    validate_certs: no
+    force_basic_auth: yes
+  register: update_task_output
+  #Until task status is successful or not
+  #We send a GET every 30s 30 times (900s)
+  #Task will be failed if field "failed" is set to true
+  until: update_task_output.json|json_query(query_tasks_get_state) == "stopped"
+  retries: 30
+  delay: 10
+  failed_when: update_task_output.json|json_query(query_tasks_get_result) == "failed"

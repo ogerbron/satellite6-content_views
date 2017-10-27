@@ -1,0 +1,10 @@
+#Get content of content view
+- name: Get content view content
+  uri:
+    url: "{{ sat_url }}/content_views/{{ sat_cv_id }}"
+    method: GET
+    user: "{{ sat_user }}"
+    password: "{{ sat_password }}"
+    validate_certs: no
+    force_basic_auth: yes
+  register: sat_cv

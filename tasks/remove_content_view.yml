@@ -1,0 +1,22 @@
+- name: Delete old version of content view (id is {{ sat_cv_id }}, version is {{ item.id }})
+  block:
+  - uri:
+      url: "{{ sat_url }}/v2/content_views/{{ sat_cv_id }}/remove?organization_id={{ sat_org_id }}"
+      method: PUT
+      body:
+        id: "{{ sat_cv_id }}"
+        environment_ids: ""
+        content_view_version_ids:
+        - "{{ item.id }}"
+      body_format: json
+      status_code: 202
+      user: "{{ sat_user }}"
+      password: "{{ sat_password }}"
+      validate_certs: no
+      force_basic_auth: yes
+    register: content_view_remove
+  - include: check_task.yml
+    vars:
+      sat_cv_task_id: "{{ content_view_remove.json.id }}"
+  rescue:
+  - debug: msg="Could not delete a content view, error is {{ content_view_remove.json.errors }}"

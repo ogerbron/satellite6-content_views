@@ -1,0 +1,41 @@
+- name: Promote content view to {{ item }}
+  block:
+  - name: Setting mandatory vars
+    set_fact:
+      sat_current_env_name: "{{ item }}"
+  
+  - name: Setting environment id
+    set_fact:
+      sat_env_id: "{{ environment_list.json | json_query(query_env_id) }}"
+      
+  - name: Checking if environment is already promoted
+    set_fact:
+      sat_env_is_promoted: "{{ content_view_version_last.json | json_query(query_env_is_promoted) }}"
+
+  - debug: msg="Content view has already been promoted to {{ item }}"
+    when: sat_env_is_promoted != ""
+
+  - block:
+    - name: Promoting the content view to {{ item }} 
+      uri:
+        url: "{{ sat_url }}/v2/content_view_versions/{{ sat_cv_version_last.id }}/promote"
+        method: POST
+        body:
+          id: "{{ sat_cv_version_last.id }}"
+          description: "{{ sat_promote_description }}"
+          environment_id: "{{ sat_env_id }}"
+        body_format: json
+        status_code: 202
+        user: "{{ sat_user }}"
+        password: "{{ sat_password }}"
+        validate_certs: no
+        force_basic_auth: yes
+      register: content_view_promote
+    
+    - include: check_task.yml
+      vars:
+        sat_cv_task_id: "{{ content_view_promote.json.id }}"
+    
+    rescue:
+    - debug: msg="Could not promote a content view, error is {{ content_view_promote.json.errors }}"
+    when: sat_env_is_promoted == ""

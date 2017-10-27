@@ -1,0 +1,24 @@
+---
+# defaults file for satellite6-content_views
+sat_hostname: vm-rhs.havre-port.lan
+sat_user: ""
+sat_password: ""
+sat_org: ""
+
+#If set to yes, this will publish a new version
+#before anything else
+sat_publish: yes
+#Content view name we want to publish
+sat_cv_name: ""
+
+#Content view removal
+sat_remove_old_cv: no
+#Number of old content views to keep
+sat_keep_old_cv: 5
+
+#If set to yes, this will promote the content view
+#to the specified env (with var sat_env_name)
+sat_promote: yes
+sat_follow_env_path: yes
+#Env to promote to
+sat_env_name: "Prod"
