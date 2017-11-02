@@ -13,6 +13,6 @@
   #We send a GET every 30s 30 times (900s)
   #Task will be failed if field "failed" is set to true
   until: update_task_output.json|json_query(query_tasks_get_state) == "stopped"
-  retries: 30
-  delay: 10
+  retries: "{{ sat_wait_task_retries }}"
+  delay: "{{ sat_wait_task_delay }}"
   failed_when: update_task_output.json|json_query(query_tasks_get_result) == "failed"

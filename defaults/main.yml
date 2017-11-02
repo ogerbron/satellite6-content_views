@@ -22,3 +22,17 @@ sat_promote: no
 sat_follow_env_path: yes
 #Env to promote to
 sat_env_name: ""
+
+#Tasks specific vars
+# These vars can be increased when Satellite promotion is long.
+# Since some content views can take quite a long time to be published
+# you can adjust the number of retries and the delay.
+# The default timeout for a task is 
+#   sat_wait_task_retries * sat_wait_task_delay
+#   60 * 30 = 1800 seconds
+# meaning ansible will wait for 30min for a content view to finish 
+# being published/promoted/deleted.
+# Number of times we will check tasks progession
+sat_wait_task_retries: 60
+# Delay between two task checks
+sat_wait_task_delay: 30
