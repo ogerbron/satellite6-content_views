@@ -26,6 +26,11 @@ This role expects a satellite user with sufficient privileges.
 
 ### Publish a new version
 
+Sometimes it can be beneficial to automatically update specific content views, for example the base operating system content view.
+Satellite can schedule syncs of the repositories, but the synced content will not be available to the clients until the administrator publishes a new version of a content view containing these repositories.
+
+**WARNING**: Regarding composite content views, this will for the moment only publish a new version of the composite content view, without updating versions of inner content views.
+
 ``` yml
 ---
 - hosts: localhost
@@ -42,7 +47,9 @@ This role expects a satellite user with sufficient privileges.
 
 ### Publish and promote a content view
 
-Publish a new version of a content view and promote it to environment 'satellite_env'.  
+Publish a new version of a content view and promote it to environment `satellite_env`.
+After a new version of a content view is created it is only available in the Library Lifecycle Environment. 
+To make it available to other environments, a promotion of the version has to be done. 
 
 ``` yml
 ---
@@ -60,9 +67,17 @@ Publish a new version of a content view and promote it to environment 'satellite
     - satellite6-content_views
 ```
 
+By default, the promoting will follow the environment path, and promote the content view to every environment until reaching the one specified with `sat_env_name`.
+
+For example, given the following environment path `Library -> Dev -> Testing -> Production` in the above example, setting `sat_env_name: Production` will do:
+* Publish new version to Library
+* Promote new version to Dev environement
+* Promote new version to Testing environment 
+* Promote new version to Production environment
+
 ### Only promote a content view
 
-Promote the last version of a content view to environment 'satellite_env'.  
+Promote the last version of a content view to environment `satellite_env`.  
 
 ``` yml
 ---
@@ -80,13 +95,38 @@ Promote the last version of a content view to environment 'satellite_env'.
   roles:
     - satellite6-content_views
 ```
+### Remove old content views
+
+While working with Satellite 6, new Content View versions get created pretty often, especially when testing Puppet modules and having to make them available to the clients.
+Old versions of the Content Views are kept by Satellite by default to be able to roll back to that specific version in the future. 
+But keeping too many old versions makes the Satellite UI unclear and the background tasks slower as they tend to analyse more data.
+
+By default all Content View versions that are promoted to any Lifecycle Environment and the 5 newest non-promoted versions are kept.
+The number of kept versions can be adjusted using variable `sat_keep_old_cv`.
+
+``` yml
+---
+- hosts: localhost
+  connection: local
+  vars:
+    sat_hostname: satelliteurl.example.com
+    sat_user: satellite_user
+    sat_password: satellite_password
+    sat_org: satellite_organization
+    sat_cv_name: content_view_name
+    sat_publish: no
+    sat_remove_old_cv: yes
+	sat_keep_old_cv: 5
+  roles:
+    - satellite6-content_views
+```
 
 ## Role Variables
 
 Here is a list of all the default variables for this role, which are also available in defaults/main.yml.
 
 | Variable name           | Required | Default                           | Choices  | Comments |
-|:-----------------------:|:--------:|:---------------------------------:|:--------:|:--------:|
+|-------------------------|:--------:|:---------------------------------:|:--------:|:--------:|
 |`sat_hostname`           | yes      | None                              |          |Satellite hostname, can be an IP or DNS|
 |`sat_user`               | yes      | None                              |          |Satellite username, must have admin privileges|
 |`sat_password`           | yes      | None                              |          |Satellite password for username|
