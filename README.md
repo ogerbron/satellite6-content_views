@@ -1,38 +1,119 @@
-Role Name
-=========
+# Content View Management
 
-A brief description of the role goes here.
+Satellite6-content_views is an Ansible role to easily manage content views in RedHat Satellite 6.x such as:
 
-Requirements
-------------
+* Publishing a new content view version
+* Promoting a version to an environment
+* Deleting old versions
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+This role only uses the RedHat Satellite HTTP API.
 
-Role Variables
---------------
+## Requirements
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+In order to use this role, you will need:
 
-Dependencies
-------------
+* Ansible > 2.0
+* Satellite 6.x 
+* HTTPS access authorization from your Ansible machine to your Satellite
+* A Satellite user having the following roles:
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
-Example Playbook
-----------------
+## Getting started
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Below are a few example playbooks for using this role.
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+This role expects a satellite user with sufficient privileges.
 
-License
--------
+### Publish a new version
 
-BSD
+``` yml
+---
+- hosts: localhost
+  connection: local
+  vars:
+    sat_url: satelliteurl.example.com
+    sat_user: satellite_user
+    sat_password: satellite_password
+    sat_org: satellite_organization
+    sat_cv_name: content_view_name
+  roles:
+    - satellite6-content_views
+```
 
-Author Information
-------------------
+### Publish and promote a content view
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Publish a new version of a content view and promote it to environment 'satellite_env'.  
+
+``` yml
+---
+- hosts: localhost
+  connection: local
+  vars:
+    sat_url: satelliteurl.example.com
+    sat_user: satellite_user
+    sat_password: satellite_password
+    sat_org: satellite_organization
+    sat_cv_name: content_view_name
+    sat_promote: yes
+    sat_env_name: satellite_env
+  roles:
+    - satellite6-content_views
+```
+
+### Only promote a content view
+
+Promote the last version of a content view to environment 'satellite_env'.  
+
+``` yml
+---
+- hosts: localhost
+  connection: local
+  vars:
+    sat_url: satelliteurl.example.com
+    sat_user: satellite_user
+    sat_password: satellite_password
+    sat_org: satellite_organization
+    sat_cv_name: content_view_name
+    sat_publish: no
+    sat_promote: yes
+    sat_env_name: satellite_env
+  roles:
+    - satellite6-content_views
+```
+
+## Role Variables
+
+Here is a list of all the default variables for this role, which are also available in defaults/main.yml.
+
+# defaults file for satellite6-content_views
+
+### Mandatory vars ###
+#Satellite hostname, can be an IP or DNS
+sat_hostname: ""
+#Satellite username
+sat_user: ""
+#Satellite password for username
+sat_password: ""
+#Satellite Organization
+sat_org: ""
+
+#Content view name we want to publish
+sat_cv_name: ""
+### /Mandatory vars ###
+
+#If set to yes, this will publish a new version
+#before anything else
+sat_publish: yes
+
+#Content view removal
+sat_remove_old_cv: no
+#Number of old content views to keep
+sat_keep_old_cv: 5
+
+#If set to yes, this will promote the content view
+#to the specified env (with var sat_env_name)
+sat_promote: no
+sat_follow_env_path: yes
+#Env to promote to
+sat_env_name: "Prod"
+
