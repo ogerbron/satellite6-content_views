@@ -85,6 +85,8 @@ Promote the last version of a content view to environment 'satellite_env'.
 
 Here is a list of all the default variables for this role, which are also available in defaults/main.yml.
 
+``` yml
+
 # defaults file for satellite6-content_views
 
 ### Mandatory vars ###
@@ -116,4 +118,4 @@ sat_promote: no
 sat_follow_env_path: yes
 #Env to promote to
 sat_env_name: "Prod"
-
+```
