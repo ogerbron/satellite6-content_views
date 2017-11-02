@@ -31,7 +31,7 @@ This role expects a satellite user with sufficient privileges.
 - hosts: localhost
   connection: local
   vars:
-    sat_url: satelliteurl.example.com
+    sat_hostname: satelliteurl.example.com
     sat_user: satellite_user
     sat_password: satellite_password
     sat_org: satellite_organization
@@ -49,7 +49,7 @@ Publish a new version of a content view and promote it to environment 'satellite
 - hosts: localhost
   connection: local
   vars:
-    sat_url: satelliteurl.example.com
+    sat_hostname: satelliteurl.example.com
     sat_user: satellite_user
     sat_password: satellite_password
     sat_org: satellite_organization
@@ -69,7 +69,7 @@ Promote the last version of a content view to environment 'satellite_env'.
 - hosts: localhost
   connection: local
   vars:
-    sat_url: satelliteurl.example.com
+    sat_hostname: satelliteurl.example.com
     sat_user: satellite_user
     sat_password: satellite_password
     sat_org: satellite_organization

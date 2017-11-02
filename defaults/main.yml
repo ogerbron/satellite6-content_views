@@ -21,4 +21,4 @@ sat_keep_old_cv: 5
 sat_promote: no
 sat_follow_env_path: yes
 #Env to promote to
-sat_env_name: "Prod"
+sat_env_name: ""
