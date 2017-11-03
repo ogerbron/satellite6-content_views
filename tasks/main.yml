@@ -3,9 +3,9 @@
 
 #Check vars
 #Cannot set sat_publish to yes is there is no name in sat_cv_name
-- name: Checking content view publish variables
-  fail: msg="If variable sat_publish has been set to yes, you must specify a content view name with sat_cv_name"
-  when: sat_cv_name == '' and sat_publish
+- name: Checking content view name
+  fail: msg="You must specify a content view name with sat_cv_name"
+  when: sat_cv_name == ''
 
 #Cannot set sat_promote_to_env to yes is there is no name in sat_env_name
 - name: Checking env promote variables
@@ -41,19 +41,26 @@
     sat_cv_id: "{{ content_view_list.json | json_query(query_cv_id) }}"
 
 - include: get_content_view.yml
-    
+ 
 ########################################################
 # Publish content view
 - include: publish_content_view.yml
   when: sat_publish
+
+# Getting content view another time as var is destroyed
+# when skipping previous include
+- include: get_content_view.yml
+  when: not sat_publish
   
 ########################################################
 # Promote content view
 - include: promote_content_view.yml
   when: sat_promote
-
+  
 ########################################################
 #Remove old content views
+- include: get_content_view.yml
+
 - name: Set content view version list
   set_fact:
     sat_cv_version_list: "{{ sat_cv.json | json_query(query_cv_version_list) | sort(attribute='version') }}"

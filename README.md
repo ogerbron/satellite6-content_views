@@ -29,7 +29,7 @@ This role expects a satellite user with sufficient privileges.
 Sometimes it can be beneficial to automatically update specific content views, for example the base operating system content view.
 Satellite can schedule syncs of the repositories, but the synced content will not be available to the clients until the administrator publishes a new version of a content view containing these repositories.
 
-**WARNING**: Regarding composite content views, this will for the moment only publish a new version of the composite content view, without updating versions of inner content views.
+**WARNING**: Regarding composite content views, this will update inner composite views to their latest version before publishing.
 
 ``` yml
 ---
@@ -116,7 +116,7 @@ The number of kept versions can be adjusted using variable `sat_keep_old_cv`.
     sat_cv_name: content_view_name
     sat_publish: no
     sat_remove_old_cv: yes
-	sat_keep_old_cv: 5
+    sat_keep_old_cv: 5
   roles:
     - satellite6-content_views
 ```

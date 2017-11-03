@@ -1,0 +1,11 @@
+- name: Getting versions list of current content view
+  set_fact: 
+    current_cv_version_list: "{{ content_view_list.json | to_json | from_json | json_query(query_ccv_cv_version_list) }}"
+
+- name: Adding latest version id of each content views
+  set_fact:
+    sat_ccv_component_ids: "{{ sat_ccv_component_ids + [ inner_item.id ] }}"
+  when: 1 in inner_item.environment_ids
+  with_items: "{{ current_cv_version_list }}"
+  loop_control:
+    loop_var: inner_item

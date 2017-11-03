@@ -1,6 +1,25 @@
 #TODO
 #Get all content view inside
 #for each content view inside
-#  get latest version ID (components[*].content_view.next_version - 1 )
+#  get latest version ID (version promoted to env library)
 #  update composite view with latest version ID
-- debug: msg="NOT DONE YET, Updating Composite Content View"
+- name: Initializing list of component version ids
+  set_fact:
+    sat_ccv_component_ids: []
+ 
+- include: build_component_ids.yml
+  with_items: "{{ sat_cv.json | json_query(query_ccv_component_labels_list) }}"
+  
+- name: Update Composite Content View
+  uri:
+    url: "{{ sat_url }}/v2/content_views/{{ sat_cv_id }}"
+    method: PUT
+    body:
+      component_ids: "{{ sat_ccv_component_ids }}"
+    body_format: json
+    status_code: 200
+    user: "{{ sat_user }}"
+    password: "{{ sat_password }}"
+    validate_certs: no
+    force_basic_auth: yes
+  register: composite_content_view_update
