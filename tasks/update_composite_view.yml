@@ -10,7 +10,7 @@
 - include: build_component_ids.yml
   with_items: "{{ sat_cv.json | json_query(query_ccv_component_labels_list) }}"
   
-- name: Update Composite Content View
+- name: Update Composite Content View {{ sat_cv.json.name }}
   uri:
     url: "{{ sat_url }}/v2/content_views/{{ sat_cv_id }}"
     method: PUT

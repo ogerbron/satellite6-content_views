@@ -1,4 +1,4 @@
-- name: Promote content view to {{ item }}
+- name: Promote content view {{ sat_cv.json.name }} to {{ item }}
   block:
   - name: Setting mandatory vars
     set_fact:
@@ -16,7 +16,7 @@
     when: sat_env_is_promoted != ""
 
   - block:
-    - name: Promoting the content view to {{ item }} 
+    - name: Promoting the content view {{ sat_cv.json.name }} to {{ item }} 
       uri:
         url: "{{ sat_url }}/v2/content_view_versions/{{ sat_cv_version_last.id }}/promote"
         method: POST
@@ -37,5 +37,5 @@
         sat_cv_task_id: "{{ content_view_promote.json.id }}"
     
     rescue:
-    - debug: msg="Could not promote a content view, error is {{ content_view_promote.json.errors }}"
+    - debug: msg="Could not promote content view {{ sat_cv.json.name }}, error is {{ content_view_promote.json.errors }}"
     when: sat_env_is_promoted == ""
