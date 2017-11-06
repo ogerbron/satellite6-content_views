@@ -126,22 +126,29 @@ The number of kept versions can be adjusted using variable `sat_keep_old_cv`.
 Here is a list of all the default variables for this role, which are also available in defaults/main.yml.
 
 | Variable name           | Required | Default                           | Choices  | Comments |
-|-------------------------|:--------:|:---------------------------------:|:--------:|:--------:|
-|`sat_hostname`           | yes      | None                              |          |Satellite hostname, can be an IP or DNS|
-|`sat_user`               | yes      | None                              |          |Satellite username, must have admin privileges|
-|`sat_password`           | yes      | None                              |          |Satellite password for username|
-|`sat_org`                | yes      | None                              |          |Satellite Organization in which the content view is|
-|`sat_cv_name`            | yes      | None                              |          |Content view name we want to publish|
-|`sat_publish`            | no       | yes                               |- yes - no|If set to yes, this will publish a new version|
-|`sat_remove_old_cv`      | no       | no                                |- yes - no|If set to yes, this will remove old content views, use variable `sat_keep_old_cv` to specify the number of content views to keep |
-|`sat_keep_old_cv`        | no       | 5                                 |          |Number of old content views to keep|
-|`sat_promote`            | no       | no                                |- yes - no|If set to yes, this will promote the content view to the specified env (with var `sat_env_name`)|
-|`sat_follow_env_path`    | no       | yes                               |- yes - no|TODO|
-|`sat_env_name`           | no       | None                              |          |Env to promote to|
-|`sat_wait_task_retries`  | no       | 60                                |          |These vars can be increased when Satellite promotion is long. Since some content views can take quite a long time to be published you can adjust the number of retries and the delay. The default timeout for a task is `sat_wait_task_retries` * `sat_wait_task_delay`. By default, 60 * 30 = 1800 seconds, meaning ansible will wait for 30min for a content view to finish  being published/promoted/deleted.|
-|`sat_wait_task_delay`    | no       | 30                                |          |Delay between two task checks|
-|`sat_publish_description`| no       | Automated publishing from Ansible |          |A message that will appear in the version description |
-|`sat_promote_description`| no       | Automated promotion from Ansible  |          |A message that will appear in the promotion description|
+|-------------------------|:--------:|:---------------------------------:|:---------|:---------|
+|`sat_hostname`           | yes      | None                              | N/A                   |Satellite hostname, can be an IP or DNS|
+|`sat_user`               | yes      | None                              | N/A                   |Satellite username, must have admin privileges|
+|`sat_password`           | yes      | None                              | N/A                   |Satellite password for username|
+|`sat_org`                | yes      | None                              | N/A                   |Satellite Organization in which the content view is|
+|`sat_cv_name`            | yes      | None                              | N/A                   |Content view name we want to publish|
+|`sat_publish`            | no       | yes                               |yes/no <br/> true/false|If set to yes, this will publish a new version|
+|`sat_remove_old_cv`      | no       | no                                |yes/no <br/> true/false|If set to yes, this will remove old content views, use variable `sat_keep_old_cv` to specify the number of content views to keep |
+|`sat_keep_old_cv`        | no       | 5                                 | N/A                   |Number of old content views to keep|
+|`sat_promote`            | no       | no                                |yes/no <br/> true/false|If set to yes, this will promote the content view to the specified env (with var `sat_env_name`)|
+|`sat_follow_env_path`    | no       | yes                               |yes/no <br/> true/false|If set to yes, this will promote to every environments contained in the environment path until reaching `sat_env_name` (see example [Publish and promote](#publish-and-promote-a-content-view)) |
+|`sat_env_name`           | no       | None                              | N/A                   |Env to promote to|
+|`sat_wait_task_retries`  | no       | 60                                | N/A                   |These vars can be increased when Satellite promotion is long. Since some content views can take quite a long time to be published you can adjust the number of retries and the delay. The default timeout for a task is `sat_wait_task_retries` x `sat_wait_task_delay`. By default, 60 x 30 = 1800 seconds, meaning ansible will wait for 30min for a content view to finish  being published/promoted/deleted.|
+|`sat_wait_task_delay`    | no       | 30                                | N/A                   |Delay between two task checks|
+|`sat_publish_description`| no       | Automated publishing from Ansible | N/A                   |A message that will appear in the version description |
+|`sat_promote_description`| no       | Automated promotion from Ansible  | N/A                   |A message that will appear in the promotion description|
+
+## TODO
+
+* Publish all content views at once
+* Promote a specific version of a content view
+* Publish a content view only if there are new packages/puppet modules
+* Optimise task search with accurate filters
 
 ## Licence
 

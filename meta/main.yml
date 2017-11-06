@@ -15,5 +15,6 @@ galaxy_info:
   - configuration
   - management
   - automation
+  - katello
 
 dependencies: []
