@@ -4,8 +4,10 @@ sat_protocol: https
 sat_url_api: katello/api
 sat_url: "{{ sat_protocol }}://{{ sat_hostname }}/{{ sat_url_api }}"
 sat_url_foreman: "{{ sat_protocol }}://{{ sat_hostname }}/foreman_tasks/api"
+sat_url_timeout: 180
 sat_publish_description: "Automated publishing from Ansible"
 sat_promote_description: "Automated promotion from Ansible"
+
 
 #General queries
 query_organization_id: "results[?name=='{{ sat_org }}'].id | [0]"

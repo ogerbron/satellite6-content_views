@@ -1,0 +1,15 @@
+- hosts: localhost
+  connection: local
+  vars:
+    sat_hostname: test.example.com
+    sat_user: satellite_user
+    sat_password: satellite_password
+    sat_org: fake_org
+    sat_cv_name: test_cv
+    sat_publish: no 
+    #Do not follow environment path
+    sat_follow_env_path: no
+    sat_promote: yes
+    sat_env_name: env_prod
+  roles:
+    - satellite6-content_views

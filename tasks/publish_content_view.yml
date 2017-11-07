@@ -14,6 +14,7 @@
     password: "{{ sat_password }}"
     validate_certs: no
     force_basic_auth: yes
+    timeout: "{{ sat_url_timeout }}"
   register: content_view_publish
 
 - include: check_task.yml

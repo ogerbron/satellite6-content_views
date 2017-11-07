@@ -1,0 +1,10 @@
+- hosts: localhost
+  connection: local
+  vars:
+    sat_hostname: test.example.com
+    sat_user: satellite_user
+    sat_password: satellite_password
+    sat_org: fake_org
+    sat_cv_name: test_cv
+  roles:
+    - satellite6-content_views

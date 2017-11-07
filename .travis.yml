@@ -19,7 +19,7 @@ install:
 
 script:
   # Syntax check
-  - "ansible-playbook -i localhost, tests/test.yml --syntax-check"
+  - "ansible-playbook -i localhost, tests/test_include_role.yml --syntax-check"
   
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

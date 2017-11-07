@@ -149,6 +149,7 @@ Here is a list of all the default variables for this role, which are also availa
 * Promote a specific version of a content view
 * Publish a content view only if there are new packages/puppet modules
 * Optimise task search with accurate filters
+* Add a bunch of tests
 
 ## Licence
 
