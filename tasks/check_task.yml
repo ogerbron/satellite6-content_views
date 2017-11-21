@@ -1,6 +1,6 @@
 - name: Check task progression (Task id is {{ sat_cv_task_id }})
   uri:
-    url: "{{ sat_url_foreman }}/tasks"
+    url: "{{ sat_url_foreman }}/{{ sat_url_filter_task_id }}{{ sat_cv_task_id }}"
     method: GET
     body_format: json
     status_code: 200
