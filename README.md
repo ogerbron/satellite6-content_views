@@ -1,6 +1,6 @@
 [ ![Image](https://cloud.githubusercontent.com/assets/5514990/24834935/e0d1db04-1d1c-11e7-8ad0-53fd45ff13c3.png "Ansible") ](https://www.ansible.com/ "Ansible")
 
-[![Build Status](https://travis-ci.org/gerbron/satellite6-content_views.svg?branch=master)](https://travis-ci.org/gerbron/satellite6-content_views/)
+[![Build Status](https://travis-ci.org/ogerbron/satellite6-content_views.svg?branch=master)](https://travis-ci.org/ogerbron/satellite6-content_views/)
 [![Ansible Role](https://img.shields.io/ansible/role/21653.svg)](https://galaxy.ansible.com/gerbron/satellite6-content_views/)
 
 # Content View Management
