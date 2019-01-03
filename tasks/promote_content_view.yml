@@ -15,7 +15,7 @@
     sat_env_path:
       - "{{ sat_env_name }}"
 
-#Getting content view content as it may have changed if we 
+#Getting content view content as it may have changed if we
 #performed a publish action previously
 - include: get_content_view.yml
 
@@ -23,12 +23,12 @@
 #Couldn't use until with a block
 #Couldn't use until with only set_fact, as it will set the value only once
 - name: Setting {{ sat_current_env_name }} in path
-  set_fact: 
+  set_fact:
     sat_env_path: "{{ [ environment_list.json | json_query(query_env_prior) ] + sat_env_path }}"
     sat_current_env_name: "{{ environment_list.json | json_query(query_env_prior) }}"
-  when: 
+  when:
     - not environment_list.json | json_query(query_env_prior) == 'Library'
-    - sat_follow_env_path 
+    - sat_follow_env_path
   with_sequence: start=0 end=15 stride=1
 
 - name: Get last content view version
@@ -47,4 +47,3 @@
 
 - include: promote_to_env.yml
   with_items: "{{ sat_env_path }}"
-  

@@ -1,14 +1,14 @@
 galaxy_info:
   author: Olivier Gerbron
   description: Role to manage content views in RedHat Satellite
-  company: none  
+  company: none
   license: license GPLv3
   min_ansible_version: 2.0
   platforms:
   - name: EL
     versions:
     - all
-  galaxy_tags: 
+  galaxy_tags:
   - satellite
   - satellite6
   - redhat

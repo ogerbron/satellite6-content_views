@@ -5,12 +5,12 @@
 #Cannot set sat_publish to yes is there is no name in sat_cv_name
 - name: Checking content view name
   fail: msg="You must specify a content view name with sat_cv_name"
-  when: sat_cv_name == ''
+  when: not sat_cv_name
 
 #Cannot set sat_promote_to_env to yes is there is no name in sat_env_name
 - name: Checking env promote variables
   fail: msg="If variable sat_promote has been set to yes, you must specify a environment name with sat_env_name"
-  when: sat_env_name == '' and sat_promote
+  when: not sat_env_name and sat_promote
 
 #Get list of content views to get id from name
 - name: Get content view list
@@ -37,11 +37,11 @@
 #Set correct IDs
 - name: Get correct IDs
   set_fact:
-    sat_org_id: "{{organization_list.json | json_query(query_organization_id) }}"
+    sat_org_id: "{{ organization_list.json | json_query(query_organization_id) }}"
     sat_cv_id: "{{ content_view_list.json | json_query(query_cv_id) }}"
 
 - include: get_content_view.yml
- 
+
 ########################################################
 # Publish content view
 - include: publish_content_view.yml
@@ -51,29 +51,29 @@
 # when skipping previous include
 - include: get_content_view.yml
   when: not sat_publish
-  
+
 ########################################################
 # Promote content view
 - include: promote_content_view.yml
   when: sat_promote
-  
+
 ########################################################
 #Remove old content views
 - block:
   - include: get_content_view.yml
-  
+
   - name: Set content view version list
     set_fact:
       sat_cv_version_list: "{{ sat_cv.json | json_query(query_cv_version_list) | sort(attribute='version') }}"
-    
+
   - name: Set the number of content view version
     set_fact:
       sat_cv_version_number: "{{ sat_cv_version_list | json_query('[*].version') | length | int }}"
-    
-  - include: remove_content_view.yml 
+
+  - include: remove_content_view.yml
     with_items: "{{ sat_cv_version_list[0:remove_sequence_end|int] }}"
-    when: 
+    when:
       - sat_cv_version_number|int > sat_keep_old_cv
     vars:
-      remove_sequence_end: "{{ sat_cv_version_number | int - sat_keep_old_cv}}"
-  when: sat_remove_old_cv    
+      remove_sequence_end: "{{ sat_cv_version_number | int - sat_keep_old_cv }}"
+  when: sat_remove_old_cv
