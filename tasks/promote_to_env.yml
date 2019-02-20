@@ -18,7 +18,7 @@
   - block:
     - name: Promoting the content view {{ sat_cv.json.name }} to {{ item }}
       uri:
-        url: "{{ sat_url }}/v2/content_view_versions/{{ sat_cv_version_last.id }}/promote"
+        url: "{{ sat_url }}/{{ sat_api_path_content_view_versions }}/{{ sat_cv_version_last.id }}/promote"
         method: POST
         body:
           id: "{{ sat_cv_version_last.id }}"

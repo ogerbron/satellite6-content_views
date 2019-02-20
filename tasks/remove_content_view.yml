@@ -2,7 +2,7 @@
   block:
   - name: Removing content view version {{ item.version }}
     uri:
-      url: "{{ sat_url }}/v2/content_views/{{ sat_cv_id }}/remove?organization_id={{ sat_org_id }}"
+      url: "{{ sat_url }}/{{ sat_api_path_content_views }}/{{ sat_cv_id }}/remove?organization_id={{ sat_org_id }}"
       method: PUT
       body:
         id: "{{ sat_cv_id }}"

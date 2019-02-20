@@ -3,7 +3,7 @@
 
 - name: Publish Content View {{ sat_cv.json.name }}
   uri:
-    url: "{{ sat_url }}/v2/content_views/{{ sat_cv_id }}/publish?organization_id={{ sat_org_id }}"
+    url: "{{ sat_url }}/{{ sat_api_path_content_views }}/{{ sat_cv_id }}/publish?organization_id={{ sat_org_id }}"
     method: POST
     body:
       id: "{{ sat_cv_id }}"

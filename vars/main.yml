@@ -9,6 +9,9 @@ sat_url_timeout: 180
 sat_publish_description: "Automated publishing from Ansible"
 sat_promote_description: "Automated promotion from Ansible"
 
+# vars for api path
+sat_api_path_content_views: "v2/content_views"
+sat_api_path_content_view_versions: "v2/content_view_versions"
 
 #General queries
 query_organization_id: "results[?name=='{{ sat_org }}'].id | [0]"
