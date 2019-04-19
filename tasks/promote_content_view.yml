@@ -33,7 +33,7 @@
 
 - name: Get last content view version
   set_fact:
-    sat_cv_version_last: "{{ sat_cv.json | json_query(query_cv_version_list) | sort(attribute='version') | last }}"
+    sat_cv_version_last: "{{ sat_cv.json | json_query(query_cv_version_list) | last }}"
 
 - name: Get content view version content
   uri:
