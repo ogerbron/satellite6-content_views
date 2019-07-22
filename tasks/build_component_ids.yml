@@ -7,6 +7,6 @@
   set_fact:
     sat_ccv_component_ids: "{{ sat_ccv_component_ids + [ inner_item.id ] }}"
   when: 1 in inner_item.environment_ids
-  with_items: "{{ current_cv_version_list }}"
+  with_list: "{{ current_cv_version_list }}"
   loop_control:
     loop_var: inner_item
