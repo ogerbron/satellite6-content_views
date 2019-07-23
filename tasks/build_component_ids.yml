@@ -1,7 +1,6 @@
 - name: Getting versions list of current content view
   set_fact:
-    current_cv_version_list: >-
-      "{{ content_view_list.json | to_json | from_json | json_query(query_ccv_cv_version_list) }}"
+    current_cv_version_list: "{{ content_view_list.json | json_query(query_ccv_cv_version_list) }}"
 
 - name: Adding latest version id of each content views
   set_fact:
