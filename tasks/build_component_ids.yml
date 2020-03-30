@@ -5,7 +5,7 @@
 - name: Adding latest version id of each content views
   set_fact:
     sat_ccv_component_ids: "{{ sat_ccv_component_ids + [ inner_item.id ] }}"
-  when: 1 in inner_item.environment_ids
+  when: inner_item.environment_ids is defined and (inner_item.environment_ids|length>0)
   with_list: "{{ current_cv_version_list }}"
   loop_control:
     loop_var: inner_item
