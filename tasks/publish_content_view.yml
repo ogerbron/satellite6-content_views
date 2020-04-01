@@ -1,7 +1,9 @@
-- include: update_composite_view.yml
-  when: sat_cv.json.composite
+---
 
-- name: Publish Content View {{ sat_cv.json.name }}
+- include: update_composite_view.yml
+  when: is_composite
+
+- name: Publish Content View {{ cv_name }}
   uri:
     url: "{{ sat_url }}/{{ sat_api_path_content_views }}/{{ sat_cv_id }}/publish?organization_id={{ sat_org_id }}"
     method: POST

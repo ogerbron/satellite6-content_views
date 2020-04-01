@@ -1,3 +1,4 @@
+---
 #Get content of content view
 - name: Get content view content
   uri:
@@ -8,3 +9,7 @@
     validate_certs: no
     force_basic_auth: yes
   register: sat_cv
+
+- set_fact:
+    is_composite: "{{ sat_cv.json | json_query('composite') }}"
+    cv_name: "{{ sat_cv.json | json_query('name') }}"

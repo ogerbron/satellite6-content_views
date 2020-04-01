@@ -17,7 +17,8 @@ sat_api_path_content_view_versions: "v2/content_view_versions"
 query_organization_id: "results[?name=='{{ sat_org }}'].id | [0]"
 
 #Content view queries
-query_cv_id: "results[?name=='{{ sat_cv_name }}'].id | [0]"
+#query_cv_id: "results[?name=='{{ sat_cv_name }}'].id | [0]"
+query_cv_id: "results[].content_view_components[].content_view | [?name=='{{ sat_cv_name }}'].id |        [0]"
 query_cv_not_composite: "results[?composite=='false'].id | [0]"
 query_cv_version_list: "versions[*].{id: id, version: version, environment_ids: environment_ids, published: published}"
 query_cv_latest_version_id: "results[?id=={{ item }}].versions[*].environment_ids"
