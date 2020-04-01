@@ -1,4 +1,4 @@
-- name: Delete old version of content view {{ sat_cv.json.name }} (id is {{ sat_cv_id }}, version is {{ item.id }})
+- name: Delete old version of content view {{ cv_name }} (id is {{ sat_cv_id }}, version is {{ item.id }})
   block:
   - name: Removing content view version {{ item.version }}
     uri:
