@@ -23,7 +23,7 @@
         body:
           id: "{{ sat_cv_version_last.id }}"
           description: "{{ sat_promote_description }}"
-          environment_id: "{{ sat_env_id }}"
+          environment_ids: "{{ sat_env_id }}"
         body_format: json
         status_code: 202
         user: "{{ sat_user }}"
